@@ -11,12 +11,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+    <PackageReference Include="MediatR" Version="12.0.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
   
   <ItemGroup>
     <ProjectReference Include="..\Domain\MlcAccounting.Domain.csproj" />
     <ProjectReference Include="..\Infrastructure\MlcAccounting.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="MlcAccounting.Api.Tests.Integration" />
   </ItemGroup>
 
 </Project>
