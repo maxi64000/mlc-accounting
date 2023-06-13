@@ -32,17 +32,4 @@
     <ProjectReference Include="..\..\..\Sources\Api\MlcAccounting.Api.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Compile Update="Features\CreateUser.feature.cs">
-      <DependentUpon>CreateUser.feature</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <SpecFlowFeatureFiles Update="Features\CreateUser.feature">
-      <Visible>$(UsingMicrosoftNETSdk)</Visible>
-      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
-    </SpecFlowFeatureFiles>
-  </ItemGroup>
-
 </Project>

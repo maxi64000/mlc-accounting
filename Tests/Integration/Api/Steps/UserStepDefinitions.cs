@@ -1,12 +1,12 @@
 ﻿using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using MlcAccounting.Api.UserFeatures.CreateUser;
+using MlcAccounting.Api.UserFeatures.UpdateUser;
 using MlcAccounting.Domain.UserAggregate.Builders;
 using MlcAccounting.Domain.UserAggregate.Entities;
 using MlcAccounting.Infrastructure.UserRepository;
 using MlcAccounting.Infrastructure.UserRepository.Dtos;
 using Newtonsoft.Json;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Mime;
@@ -22,9 +22,9 @@ internal class UserStepDefinitions : ICollectionFixture<TestWebApplicationFactor
 {
     private readonly HttpClient _httpClient;
 
-    private readonly User _user = new UserBuilder().Build();
-
     private HttpResponseMessage? _response;
+
+    private readonly User _user = new UserBuilder().Build();
 
     public UserStepDefinitions(TestWebApplicationFactory factory)
     {
@@ -43,38 +43,68 @@ internal class UserStepDefinitions : ICollectionFixture<TestWebApplicationFactor
         UserInMemoryRepository.Data.Add(new UserDto(_user));
     }
 
-    [When(@"the GetUser request is called")]
+    [When(@"the get user request is called")]
     public async Task WhenTheGetUserRequestIsCalled()
     {
-        _response = await _httpClient.GetAsync($"/users/{_user!.Id}");
+        _response = await _httpClient.GetAsync($"/users/{_user.Id}");
     }
 
-    [When(@"the CreateUser request is called")]
+    [When(@"the create user request is called")]
     public async Task WhenTheCreateUserRequestIsCalled()
     {
         _response = await _httpClient.PostAsync("/users", new StringContent(JsonConvert.SerializeObject(new CreateUserCommand
         {
-            Name = _user!.Name,
-            Password = _user!.Password
+            Name = _user.Name,
+            Password = _user.Password
         }), Encoding.UTF8, MediaTypeNames.Application.Json));
     }
 
-    [When(@"the CreateUser request is called with ""([^""]*)"" name")]
+    [When(@"the create user request is called with ""([^""]*)"" name")]
     public async Task WhenTheCreateUserRequestIsCalledWithName(string name)
     {
         _response = await _httpClient.PostAsync("/users", new StringContent(JsonConvert.SerializeObject(new CreateUserCommand
         {
             Name = name,
-            Password = _user!.Password
+            Password = _user.Password
         }), Encoding.UTF8, MediaTypeNames.Application.Json));
     }
 
-    [When(@"the CreateUser request is called with ""([^""]*)"" password")]
+    [When(@"the create user request is called with ""([^""]*)"" password")]
     public async Task WhenTheCreateUserRequestIsCalledWithPassword(string password)
     {
         _response = await _httpClient.PostAsync("/users", new StringContent(JsonConvert.SerializeObject(new CreateUserCommand
         {
-            Name = _user!.Name,
+            Name = _user.Name,
+            Password = password
+        }), Encoding.UTF8, MediaTypeNames.Application.Json));
+    }
+
+    [When(@"the update user request is called")]
+    public async Task WhenTheUpdateUserRequestIsCalled()
+    {
+        _response = await _httpClient.PutAsync($"/users/{_user.Id}", new StringContent(JsonConvert.SerializeObject(new UpdateUserCommand
+        {
+            Name = _user.Name,
+            Password = _user.Password
+        }), Encoding.UTF8, MediaTypeNames.Application.Json));
+    }
+
+    [When(@"the update user request is called with ""([^""]*)"" name")]
+    public async Task WhenTheUpdateUserRequestIsCalledWithName(string name)
+    {
+        _response = await _httpClient.PutAsync($"/users/{_user.Id}", new StringContent(JsonConvert.SerializeObject(new UpdateUserCommand
+        {
+            Name = name,
+            Password = _user.Password
+        }), Encoding.UTF8, MediaTypeNames.Application.Json));
+    }
+
+    [When(@"the update user request is called with ""([^""]*)"" password")]
+    public async Task WhenTheUpdateUserRequestIsCalledWithPassword(string password)
+    {
+        _response = await _httpClient.PutAsync($"/users/{_user.Id}", new StringContent(JsonConvert.SerializeObject(new UpdateUserCommand
+        {
+            Name = _user.Name,
             Password = password
         }), Encoding.UTF8, MediaTypeNames.Application.Json));
     }
@@ -91,18 +121,6 @@ internal class UserStepDefinitions : ICollectionFixture<TestWebApplicationFactor
         var actual = JsonConvert.DeserializeObject<User>(await _response!.Content.ReadAsStringAsync());
 
         actual.Should().BeEquivalentTo(_user);
-    }
-
-    [Then(@"the response header ""([^""]*)"" contains link to get the user")]
-    public async Task ThenTheResponseHeaderContainsLinkToGetTheUser(string name)
-    {
-        var location = _response!.Headers.GetValues(name).FirstOrDefault();
-
-        var actual = JsonConvert.DeserializeObject<User>(await (await _httpClient.GetAsync(location)).Content.ReadAsStringAsync());
-
-        actual.Should().BeEquivalentTo(_user, _ => _.Excluding(_ => _.Id).Excluding(_ => _.CreatedAt).Excluding(_ => _.UpdatedAt));
-
-        actual.UpdatedAt.Should().BeNull();
     }
 
     [Then(@"the response detail is equal to ""([^""]*)""")]

@@ -28,4 +28,21 @@ public class UserService : IUserService
 
         return user.Id;
     }
+
+    public async Task<bool> UpdateAsync(User user)
+    {
+        var current = await _repository.GetAsync(user.Id);
+
+        if (current == null)
+        {
+            return false;
+        }
+
+        user.CreatedAt = current.CreatedAt;
+        user.UpdatedAt = DateTime.UtcNow;
+
+        await _repository.UpdateAsync(user);
+
+        return true;
+    }
 }
