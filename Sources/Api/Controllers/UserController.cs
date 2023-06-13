@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using MlcAccounting.Api.UserFeatures.CreateUser;
 using MlcAccounting.Api.UserFeatures.GetUser;
 using MlcAccounting.Domain.UserAggregate.Entities;
 using System.Net;
@@ -28,5 +29,23 @@ public class UserController : ControllerBase
             Status = (int)HttpStatusCode.NotFound,
             Detail = "This user doesn't exist."
         });
+    }
+
+    [HttpPost("")]
+    public async Task<ActionResult> CreateUser([FromBody] CreateUserCommand command)
+    {
+        var id = await _mediator.Send(command);
+
+        if (id == null)
+        {
+            return Conflict(new ProblemDetails
+            {
+                Title = "Conflict",
+                Status = (int)HttpStatusCode.Conflict,
+                Detail = "This user already exist."
+            });
+        }
+
+        return CreatedAtAction(nameof(GetUser), new { id }, null);
     }
 }

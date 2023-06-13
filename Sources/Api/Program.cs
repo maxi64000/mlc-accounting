@@ -1,7 +1,9 @@
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using MlcAccounting.Domain.UserAggregate;
 using MlcAccounting.Domain.UserAggregate.Abstractions;
-using MlcAccounting.Domain.UserAggregate.Entities;
-using MlcAccounting.Infrastructure.UserRepositories;
+using MlcAccounting.Infrastructure.UserRepository;
+using MlcAccounting.Infrastructure.UserRepository.Dtos;
 using MongoDB.Driver;
 using System.Text.Json.Serialization;
 
@@ -14,14 +16,14 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<Program>());
+builder.Services.AddFluentValidationAutoValidation().AddValidatorsFromAssemblyContaining<Program>();
 
-var t = builder.Configuration.GetSection("UserMongoRepository:ConnectionString").Value;
+builder.Services.AddMediatR(_ => _.RegisterServicesFromAssemblyContaining<Program>());
 
 builder.Services
     .AddSingleton(new MongoClient(builder.Configuration.GetSection("UserMongoRepository:ConnectionString").Value)
         .GetDatabase(builder.Configuration.GetSection("UserMongoRepository:Database").Value)
-        .GetCollection<User>(builder.Configuration.GetSection("UserMongoRepository:Collection").Value))
+        .GetCollection<UserDto>(builder.Configuration.GetSection("UserMongoRepository:Collection").Value))
     .AddSingleton<IUserRepository, UserMongoRepository>();
 
 builder.Services

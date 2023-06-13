@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using MlcAccounting.Api.Controllers;
+using MlcAccounting.Api.UserFeatures.CreateUser;
 using MlcAccounting.Api.UserFeatures.GetUser;
 using MlcAccounting.Domain.UserAggregate.Builders;
 using MlcAccounting.Domain.UserAggregate.Entities;
@@ -28,7 +29,7 @@ public class UserControllerTests
     }
 
     [Fact]
-    public async Task Get_User_Successfully()
+    public async Task GetUser_Successfully()
     {
         // Arrange
         var user = new UserBuilder().Build();
@@ -36,7 +37,7 @@ public class UserControllerTests
         var expected = new OkObjectResult(user);
 
         _mediator
-            .Setup(mediator => mediator.Send(It.IsAny<GetUserQuery>(), It.IsAny<CancellationToken>()))
+            .Setup(_ => _.Send(It.IsAny<GetUserQuery>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(user);
 
         // Act
@@ -47,7 +48,7 @@ public class UserControllerTests
     }
 
     [Fact]
-    public async Task Get_User_When_Does_Not_Exist()
+    public async Task GetUser_When_Does_Not_Exist()
     {
         // Arrange
         var expected = new NotFoundObjectResult(new ProblemDetails
@@ -58,11 +59,52 @@ public class UserControllerTests
         });
 
         _mediator
-            .Setup(mediator => mediator.Send(It.IsAny<GetUserQuery>(), It.IsAny<CancellationToken>()))
+            .Setup(_ => _.Send(It.IsAny<GetUserQuery>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(null as User);
 
         // Act
         var actual = (await _controller.GetUser(Guid.NewGuid())).Result as NotFoundObjectResult;
+
+        // Assert
+        actual.Should().BeEquivalentTo(expected);
+    }
+
+    [Fact]
+    public async Task CreateUser_Successfully()
+    {
+        // Arrange
+        var user = new UserBuilder().Build();
+
+        var expected = new CreatedAtActionResult("GetUser", null, new { id = user.Id }, null);
+
+        _mediator
+            .Setup(_ => _.Send(It.IsAny<CreateUserCommand>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(user.Id);
+
+        // Act
+        var actual = await _controller.CreateUser(new CreateUserCommand()) as CreatedAtActionResult;
+
+        // Assert
+        actual.Should().BeEquivalentTo(expected);
+    }
+
+    [Fact]
+    public async Task CreateUser_When_Already_Exist()
+    {
+        // Arrange
+        var expected = new ConflictObjectResult(new ProblemDetails
+        {
+            Title = "Conflict",
+            Status = (int)HttpStatusCode.Conflict,
+            Detail = "This user already exist."
+        });
+
+        _mediator
+            .Setup(_ => _.Send(It.IsAny<CreateUserCommand>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(null as Guid?);
+
+        // Act
+        var actual = await _controller.CreateUser(new CreateUserCommand()) as ConflictObjectResult;
 
         // Assert
         actual.Should().BeEquivalentTo(expected);

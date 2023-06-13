@@ -24,7 +24,7 @@ public class GetUserHandlerTests
     }
 
     [Fact]
-    public async Task Get_User_Successfully()
+    public async Task Should_Get_User_Successfully()
     {
         // Arrange
         var expected = new UserBuilder().Build();
@@ -34,10 +34,7 @@ public class GetUserHandlerTests
             .ReturnsAsync(expected);
 
         // Act
-        var actual = await _handler.Handle(new GetUserQuery
-        {
-            Id = expected.Id
-        }, CancellationToken.None);
+        var actual = await _handler.Handle(new GetUserQuery(), CancellationToken.None);
 
         // Assert
         actual.Should().BeEquivalentTo(expected);

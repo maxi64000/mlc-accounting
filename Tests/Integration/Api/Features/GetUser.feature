@@ -7,6 +7,5 @@ Scenario: Get a user successfully
 	And the response is equal to the user
 
 Scenario: Get a user when user does not exist
-	Given the user does not exist
 	When the GetUser request is called
 	Then the status code is 404
