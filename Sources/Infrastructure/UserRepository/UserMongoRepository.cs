@@ -23,4 +23,7 @@ public class UserMongoRepository : IUserRepository
 
     public async Task CreateAsync(User user) =>
         await _collection.InsertOneAsync(new UserDto(user));
+
+    public async Task UpdateAsync(User user) =>
+        await _collection.ReplaceOneAsync(_ => _.Id == user.Id, new UserDto(user));
 }

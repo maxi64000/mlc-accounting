@@ -18,6 +18,6 @@ public class UserMapperTests
         var actual = new UserDto(expected).ToEntity();
 
         // Assert
-        actual.Should().BeEquivalentTo(expected, _ => _.Excluding(_ => _.Id).Excluding(_ => _.CreatedAt));
+        actual.Should().BeEquivalentTo(expected, _ => _.Excluding(user => user.Id).Excluding(user => user.CreatedAt));
     }
 }

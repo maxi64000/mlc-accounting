@@ -21,4 +21,13 @@ public class UserInMemoryRepository : IUserRepository
 
         return Task.CompletedTask;
     }
+
+    public Task UpdateAsync(User user)
+    {
+        var current = Data.First(_ => _.Id == user.Id);
+
+        Data[Data.IndexOf(current)] = new UserDto(user);
+
+        return Task.CompletedTask;
+    }
 }

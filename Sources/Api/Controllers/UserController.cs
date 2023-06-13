@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MlcAccounting.Api.UserFeatures.CreateUser;
 using MlcAccounting.Api.UserFeatures.GetUser;
+using MlcAccounting.Api.UserFeatures.UpdateUser;
 using MlcAccounting.Domain.UserAggregate.Entities;
 using System.Net;
 
@@ -47,5 +48,20 @@ public class UserController : ControllerBase
         }
 
         return CreatedAtAction(nameof(GetUser), new { id }, null);
+    }
+
+    [HttpPut("{id:guid}")]
+    public async Task<ActionResult> UpdateUser([FromRoute] Guid id, [FromBody] UpdateUserCommand command)
+    {
+        command.Id = id;
+
+        return await _mediator.Send(command)
+            ? NoContent()
+            : NotFound(new ProblemDetails
+            {
+                Title = "Not Found",
+                Status = (int)HttpStatusCode.NotFound,
+                Detail = "This user doesn't exist."
+            });
     }
 }

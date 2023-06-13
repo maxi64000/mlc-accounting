@@ -90,4 +90,14 @@ public class UserMongoRepositoryTests
         // Assert
         _collection.Verify(_ => _.InsertOneAsync(It.IsAny<UserDto>(), It.IsAny<InsertOneOptions>(), It.IsAny<CancellationToken>()), Times.Once);
     }
+
+    [Fact]
+    public async Task UpdateAsync_Successfully()
+    {
+        // Act
+        await _repository.UpdateAsync(new UserBuilder().Build());
+
+        // Assert
+        _collection.Verify(_ => _.ReplaceOneAsync(It.IsAny<FilterDefinition<UserDto>>(), It.IsAny<UserDto>(), It.IsAny<ReplaceOptions>(), It.IsAny<CancellationToken>()), Times.Once);
+    }
 }

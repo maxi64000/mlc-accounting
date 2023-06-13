@@ -78,4 +78,42 @@ public class UserServiceTests
 
         _repository.Verify(_ => _.CreateAsync(It.IsAny<User>()), Times.Never);
     }
+
+    [Fact]
+    public async Task UpdateAsync_Successfully()
+    {
+        // Arrange
+        var user = new UserBuilder().Build();
+
+        _repository
+            .Setup(_ => _.GetAsync(It.IsAny<Guid>()))
+            .ReturnsAsync(user);
+
+        // Act
+        var actual = await _service.UpdateAsync(user);
+
+        // Assert
+        actual.Should().BeTrue();
+
+        _repository.Verify(_ => _.UpdateAsync(It.IsAny<User>()), Times.Once);
+    }
+
+    [Fact]
+    public async Task UpdateAsync_When_User_Does_Not_Exist()
+    {
+        // Arrange
+        var user = new UserBuilder().Build();
+
+        _repository
+            .Setup(_ => _.GetAsync(It.IsAny<Guid>()))
+            .ReturnsAsync(null as User);
+
+        // Act
+        var actual = await _service.UpdateAsync(user);
+
+        // Assert
+        actual.Should().BeFalse();
+
+        _repository.Verify(_ => _.UpdateAsync(It.IsAny<User>()), Times.Never);
+    }
 }
