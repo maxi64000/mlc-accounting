@@ -100,4 +100,14 @@ public class UserMongoRepositoryTests
         // Assert
         _collection.Verify(_ => _.ReplaceOneAsync(It.IsAny<FilterDefinition<UserDto>>(), It.IsAny<UserDto>(), It.IsAny<ReplaceOptions>(), It.IsAny<CancellationToken>()), Times.Once);
     }
+
+    [Fact]
+    public async Task DeleteAsync_Successfully()
+    {
+        // Act
+        await _repository.DeleteAsync(Guid.NewGuid());
+
+        // Assert
+        _collection.Verify(_ => _.DeleteOneAsync(It.IsAny<FilterDefinition<UserDto>>(), It.IsAny<CancellationToken>()), Times.Once);
+    }
 }

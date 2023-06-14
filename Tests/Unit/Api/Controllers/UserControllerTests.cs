@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using MlcAccounting.Api.Controllers;
 using MlcAccounting.Api.UserFeatures.CreateUser;
+using MlcAccounting.Api.UserFeatures.DeleteUser;
 using MlcAccounting.Api.UserFeatures.GetUser;
 using MlcAccounting.Api.UserFeatures.UpdateUser;
 using MlcAccounting.Domain.UserAggregate.Builders;
@@ -145,6 +146,45 @@ public class UserControllerTests
 
         // Act
         var actual = await _controller.UpdateUser(Guid.NewGuid(), new UpdateUserCommand()) as NotFoundObjectResult;
+
+        // Assert
+        actual.Should().BeEquivalentTo(expected);
+    }
+
+    [Fact]
+    public async Task DeleteUser_Successfully()
+    {
+        // Arrange
+        var expected = new NoContentResult();
+
+        _mediator
+            .Setup(_ => _.Send(It.IsAny<DeleteUserCommand>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(true);
+
+        // Act
+        var actual = await _controller.DeleteUser(Guid.NewGuid()) as NoContentResult;
+
+        // Assert
+        actual.Should().BeEquivalentTo(expected);
+    }
+
+    [Fact]
+    public async Task DeleteUser_When_Does_Not_Exist()
+    {
+        // Arrange
+        var expected = new NotFoundObjectResult(new ProblemDetails
+        {
+            Title = "Not Found",
+            Status = (int)HttpStatusCode.NotFound,
+            Detail = "This user doesn't exist."
+        });
+
+        _mediator
+            .Setup(_ => _.Send(It.IsAny<DeleteUserCommand>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(false);
+
+        // Act
+        var actual = await _controller.DeleteUser(Guid.NewGuid()) as NotFoundObjectResult;
 
         // Assert
         actual.Should().BeEquivalentTo(expected);

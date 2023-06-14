@@ -30,4 +30,13 @@ public class UserInMemoryRepository : IUserRepository
 
         return Task.CompletedTask;
     }
+
+    public Task DeleteAsync(Guid id)
+    {
+        var current = Data.First(user => user.Id == id);
+
+        Data.Remove(current);
+
+        return Task.CompletedTask;
+    }
 }

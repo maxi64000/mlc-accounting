@@ -109,6 +109,12 @@ internal class UserStepDefinitions : ICollectionFixture<TestWebApplicationFactor
         }), Encoding.UTF8, MediaTypeNames.Application.Json));
     }
 
+    [When(@"the delete user request is called")]
+    public async Task WhenTheDeleteUserRequestIsCalled()
+    {
+        _response = await _httpClient.DeleteAsync($"/users/{_user.Id}");
+    }
+
     [Then(@"the status code is (.*)")]
     public void ThenTheStatusCodeIs(int statusCode)
     {

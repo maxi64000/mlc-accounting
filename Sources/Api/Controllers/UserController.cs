@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using MlcAccounting.Api.UserFeatures.CreateUser;
+using MlcAccounting.Api.UserFeatures.DeleteUser;
 using MlcAccounting.Api.UserFeatures.GetUser;
 using MlcAccounting.Api.UserFeatures.UpdateUser;
 using MlcAccounting.Domain.UserAggregate.Entities;
@@ -64,4 +65,15 @@ public class UserController : ControllerBase
                 Detail = "This user doesn't exist."
             });
     }
+
+    [HttpDelete("{id:guid}")]
+    public async Task<ActionResult> DeleteUser([FromRoute] Guid id) =>
+        await _mediator.Send(new DeleteUserCommand { Id = id })
+            ? NoContent()
+            : NotFound(new ProblemDetails
+            {
+                Title = "Not Found",
+                Status = (int)HttpStatusCode.NotFound,
+                Detail = "This user doesn't exist."
+            });
 }

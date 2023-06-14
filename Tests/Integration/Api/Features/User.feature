@@ -50,3 +50,13 @@ Scenario: Update a user when user does not exist
 	When the update user request is called
 	Then the status code is 404
 	And the response detail is equal to "This user doesn't exist."
+
+Scenario: Delete a user successfully
+	Given the user already exist
+	When the delete user request is called
+	Then the status code is 204
+
+Scenario: Delete a user when user does not exist
+	When the delete user request is called
+	Then the status code is 404
+	And the response detail is equal to "This user doesn't exist."

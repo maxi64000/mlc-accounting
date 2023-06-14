@@ -19,11 +19,14 @@ public class UserMongoRepository : IUserRepository
         (await _collection.Find(_ => _.Name == name).ToListAsync()).ToEntity();
 
     public async Task<User?> GetAsync(Guid id) =>
-        (await _collection.Find(_ => _.Id == id).SingleOrDefaultAsync()).ToEntity();
+        (await _collection.Find(_ => _.Id == id).SingleOrDefaultAsync())?.ToEntity();
 
     public async Task CreateAsync(User user) =>
         await _collection.InsertOneAsync(new UserDto(user));
 
     public async Task UpdateAsync(User user) =>
         await _collection.ReplaceOneAsync(_ => _.Id == user.Id, new UserDto(user));
+
+    public async Task DeleteAsync(Guid id) =>
+        await _collection.DeleteOneAsync(user => user.Id == id);
 }
