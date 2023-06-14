@@ -9,4 +9,6 @@ public interface IUserService
     Task<Guid?> CreateAsync(User user);
 
     Task<bool> UpdateAsync(User user);
+
+    Task<bool> DeleteAsync(Guid id);
 }

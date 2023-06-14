@@ -45,4 +45,18 @@ public class UserService : IUserService
 
         return true;
     }
+
+    public async Task<bool> DeleteAsync(Guid id)
+    {
+        var current = await _repository.GetAsync(id);
+
+        if (current == null)
+        {
+            return false;
+        }
+
+        await _repository.DeleteAsync(id);
+
+        return true;
+    }
 }

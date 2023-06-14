@@ -26,4 +26,7 @@ public class UserMongoRepository : IUserRepository
 
     public async Task UpdateAsync(User user) =>
         await _collection.ReplaceOneAsync(_ => _.Id == user.Id, new UserDto(user));
+
+    public async Task DeleteAsync(Guid id) =>
+        await _collection.DeleteOneAsync(user => user.Id == id);
 }
