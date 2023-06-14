@@ -19,7 +19,7 @@ public class UserMongoRepository : IUserRepository
         (await _collection.Find(_ => _.Name == name).ToListAsync()).ToEntity();
 
     public async Task<User?> GetAsync(Guid id) =>
-        (await _collection.Find(_ => _.Id == id).SingleOrDefaultAsync()).ToEntity();
+        (await _collection.Find(_ => _.Id == id).SingleOrDefaultAsync())?.ToEntity();
 
     public async Task CreateAsync(User user) =>
         await _collection.InsertOneAsync(new UserDto(user));

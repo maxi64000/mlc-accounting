@@ -3,7 +3,7 @@ using MlcAccounting.Domain.UserAggregate;
 
 namespace MlcAccounting.Api.UserFeatures.DeleteUser;
 
-public class DeleteUserHandler: IRequestHandler<DeleteUserCommand, bool>
+public class DeleteUserHandler : IRequestHandler<DeleteUserCommand, bool>
 {
     private readonly IUserService _userService;
 

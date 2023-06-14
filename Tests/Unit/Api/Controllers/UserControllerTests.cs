@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using MlcAccounting.Api.Controllers;
 using MlcAccounting.Api.UserFeatures.CreateUser;
+using MlcAccounting.Api.UserFeatures.DeleteUser;
 using MlcAccounting.Api.UserFeatures.GetUser;
 using MlcAccounting.Api.UserFeatures.UpdateUser;
 using MlcAccounting.Domain.UserAggregate.Builders;
@@ -12,7 +13,6 @@ using System;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using MlcAccounting.Api.UserFeatures.DeleteUser;
 using Xunit;
 
 namespace MlcAccounting.Api.Tests.Unit.Controllers;
