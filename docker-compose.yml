@@ -63,4 +63,4 @@ services:
       - ASPNETCORE_URLS=http://+:5080;http://+:5081
       - ASPNETCORE_HTTP_PORT=5080
       - MANAGEMENT_HTTP_PORT=5081
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=Docker
