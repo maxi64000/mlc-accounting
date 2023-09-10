@@ -1,9 +1,10 @@
 ﻿using MlcAccounting.Domain.UserAggregate.Abstractions;
 using MlcAccounting.Domain.UserAggregate.Entities;
+using MlcAccounting.Domain.UserAggregate.Specifications;
 
 namespace MlcAccounting.Domain.UserAggregate;
 
-public class UserService : IUserService
+public class UserService
 {
     private readonly IUserRepository _repository;
 
@@ -12,14 +13,15 @@ public class UserService : IUserService
         _repository = repository;
     }
 
-    public async Task<User?> GetAsync(Guid id) =>
-        await _repository.GetAsync(id);
+    public async Task<IEnumerable<User>> GetAllAsync(UserSpecification specification) => await _repository.GetAllAsync(specification);
+
+    public async Task<User?> GetAsync(Guid id) => await _repository.GetAsync(id);
 
     public async Task<Guid?> CreateAsync(User user)
     {
-        var users = await _repository.GetAllAsync(user.Name);
+        var result = await _repository.GetAllAsync(user.Name);
 
-        if (users.Any())
+        if (result.Any())
         {
             return null;
         }

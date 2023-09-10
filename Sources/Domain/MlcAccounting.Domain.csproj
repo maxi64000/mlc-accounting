@@ -10,4 +10,8 @@
     <RootNamespace>MlcAccounting.Domain</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Common\MlcAccounting.Common.csproj" />
+  </ItemGroup>
+
 </Project>
