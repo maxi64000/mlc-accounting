@@ -1,6 +1,14 @@
 #!/bin/bash
 
-docker build -f ./Sources/Referential/Dockerfile ./ -t mlc-accounting-referential
+docker rm -f $(docker ps -a -q)
+docker volume rm $(docker volume ls -q)
+
+#docker image prune -f
+#docker container prune -f
+#docker volume prune -f
+
+docker build -f ./Sources/Referential/Api/Dockerfile ./ -t mlc-accounting-referential
+docker build -f ./Sources/Integration/Api/Dockerfile ./ -t mlc-accounting-integration
 
 docker-compose up -d
 

@@ -53,7 +53,7 @@ services:
 
   mlc-accounting-referential:
     image: mlc-accounting-referential:latest
-    build: ./Sources/Referential/Dockerfile
+    build: ./Sources/Referential/Api/Dockerfile
     container_name: mlc-accounting-referential
     restart: always
     ports:
@@ -63,4 +63,18 @@ services:
       - ASPNETCORE_URLS=http://+:5080;http://+:5081
       - ASPNETCORE_HTTP_PORT=5080
       - MANAGEMENT_HTTP_PORT=5081
+      - ASPNETCORE_ENVIRONMENT=Docker
+
+  mlc-accounting-integration:
+    image: mlc-accounting-integration:latest
+    build: ./Sources/Integration/Api/Dockerfile
+    container_name: mlc-accounting-integration
+    restart: always
+    ports:
+      - "5082:5082"
+      - "5083:5083"
+    environment:
+      - ASPNETCORE_URLS=http://+:5082;http://+:5083
+      - ASPNETCORE_HTTP_PORT=5082
+      - MANAGEMENT_HTTP_PORT=5083
       - ASPNETCORE_ENVIRONMENT=Docker
