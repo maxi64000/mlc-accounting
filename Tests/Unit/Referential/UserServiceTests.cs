@@ -2,7 +2,7 @@
 using MlcAccounting.Referential.Domain.UserAggregate;
 using MlcAccounting.Referential.Domain.UserAggregate.Abstractions;
 using MlcAccounting.Referential.Domain.UserAggregate.Entities;
-using MlcAccounting.Referential.Tests.Common.Builders;
+using MlcAccounting.Tests.Common.Referential.Builders;
 using Moq;
 using System;
 using System.Collections.Generic;

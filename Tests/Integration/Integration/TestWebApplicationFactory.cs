@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Configuration;
-using System.IO;
 using MlcAccounting.Integration.Infrastructure.Repositories;
+using System.IO;
 
 namespace MlcAccounting.Integration.Tests.Integration;
 

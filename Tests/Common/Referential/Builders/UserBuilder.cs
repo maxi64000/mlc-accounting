@@ -1,6 +1,6 @@
 ﻿using MlcAccounting.Referential.Domain.UserAggregate.Entities;
 
-namespace MlcAccounting.Referential.Tests.Common.Builders;
+namespace MlcAccounting.Tests.Common.Referential.Builders;
 
 public class UserBuilder
 {

@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using MlcAccounting.Referential.Api.UserFeatures.CreateUser;
 using MlcAccounting.Referential.Api.UserFeatures.UpdateUser;
 using MlcAccounting.Referential.Domain.UserAggregate.Entities;
-using MlcAccounting.Referential.Tests.Common.Builders;
+using MlcAccounting.Tests.Common.Referential.Builders;
 using MongoDB.Driver;
 using Newtonsoft.Json;
 using System;

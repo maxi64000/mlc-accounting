@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <RootNamespace>MlcAccounting.Integration.Tests.Unit</RootNamespace>
+    <RootNamespace>MlcAccounting.Referential.Tests.Unit</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -22,7 +22,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Common\MlcAccounting.Integration.Tests.Common.csproj" />
+    <ProjectReference Include="..\..\..\Sources\Referential\Domain\MlcAccounting.Referential.Domain.csproj" />
+    <ProjectReference Include="..\..\Common\MlcAccounting.Tests.Common.csproj" />
   </ItemGroup>
 
 </Project>

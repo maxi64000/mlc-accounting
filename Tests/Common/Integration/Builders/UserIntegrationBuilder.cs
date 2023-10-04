@@ -2,7 +2,7 @@
 using MlcAccounting.Common.Integration.Enums;
 using MlcAccounting.Integration.Domain.UserIntegrationAggregate.Entities;
 
-namespace MlcAccounting.Integration.Tests.Common.Builders;
+namespace MlcAccounting.Tests.Common.Integration.Builders;
 
 public class UserIntegrationBuilder
 {
