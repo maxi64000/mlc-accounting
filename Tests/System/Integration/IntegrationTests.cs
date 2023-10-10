@@ -74,8 +74,6 @@ public class IntegrationTests : IClassFixture<IntegrationFixture>
 
         actual.Should().BeEquivalentTo(userIntegration, _ => _.Using<DateTime>(_ => _.Subject.Should().BeCloseTo(_.Expectation, TimeSpan.FromSeconds(30))).WhenTypeIs<DateTime>());
 
-        //(await _userIntegrationCollection.Find(_ => _.Id == userIntegration.Id).SingleAsync()).Should().BeEquivalentTo(userIntegration, _ => _.Using<DateTime>(_ => _.Subject.Should().BeCloseTo(_.Expectation, TimeSpan.FromSeconds(30))).WhenTypeIs<DateTime>());
-
         (await _userCollection.Find(_ => _.Name == user.Name && _.Password == user.Password).SingleAsync()).Should().NotBeNull();
     }
 
@@ -120,8 +118,6 @@ public class IntegrationTests : IClassFixture<IntegrationFixture>
         }
 
         actual.Should().BeEquivalentTo(userIntegration, _ => _.Using<DateTime>(_ => _.Subject.Should().BeCloseTo(_.Expectation, TimeSpan.FromSeconds(30))).WhenTypeIs<DateTime>());
-
-        //(await _userIntegrationCollection.Find(_ => _.Id == userIntegration.Id).SingleAsync()).Should().BeEquivalentTo(userIntegration, _ => _.Using<DateTime>(_ => _.Subject.Should().BeCloseTo(_.Expectation, TimeSpan.FromSeconds(30))).WhenTypeIs<DateTime>());
 
         (await _userCollection.Find(_ => _.Id == user.Id).SingleAsync()).Should().BeEquivalentTo(user, _ => _.Using<DateTime>(_ => _.Subject.Should().BeCloseTo(_.Expectation, TimeSpan.FromSeconds(30))).WhenTypeIs<DateTime>());
     }
